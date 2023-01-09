@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>User Info</title>
+</head>
+<body>
+<table border="1">
+    <thead>
+    <tr>
+        <colgroup>
+            <col span="6" style="background-color: cornflowerblue">
+        </colgroup>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Lastname</th>
+        <th>Age</th>
+        <th>Email</th>
+        <th>Password</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:object="${user}">
+        <td th:text="${user.getId()}"></td>
+        <td th:text = "${user.getName()}"></td>
+        <td th:text="${user.getLastname()}"></td>
+        <td th:text="${user.getAge()}"></td>
+        <td th:text="${user.getEmail()}"></td>
+        <td th:text = "${user.getPassword()}"></td>
+    </tr>
+    </tbody>
+</table>
+<br>
+<h4><a href="/admin">Admin</a></h4>
+
+<br>
+<form name="logOut" th:action="@{/logout}" method="post">
+    <input type="submit" value="Exit">
+</form>
+
+
+</body>
+</html>
