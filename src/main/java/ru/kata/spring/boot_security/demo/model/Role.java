@@ -1,11 +1,8 @@
 package ru.kata.spring.boot_security.demo.model;
 
 import lombok.Data;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
-
-
-import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -17,16 +14,18 @@ public class Role implements GrantedAuthority {
     private String name;
 
     @Transient
-    @ManyToMany(mappedBy = "roles")
     private Set<User> user;
-
 
     public Role() {
     }
-
-    public Role(Long id, String name) {
-        this.id = id;
+    public Role(String name, Long id) {
         this.name = name;
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return getName();
     }
 
     @Override
@@ -34,21 +33,5 @@ public class Role implements GrantedAuthority {
         return getName();
     }
 
-    @Override
-    public String toString() {
-        return this.name;
-    }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Role)) return false;
-        Role role = (Role) o;
-        return Objects.equals(id, role.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }

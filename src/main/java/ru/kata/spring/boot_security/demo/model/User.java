@@ -4,16 +4,13 @@ import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import jakarta.persistence.*;
-
-import java.util.Collection;
-import java.util.List;
-
+import javax.persistence.*;
+import java.util.*;
 
 @Entity
 @Data
 @Table(name = "users")
-public class User implements UserDetails {
+public class User  implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -34,12 +31,12 @@ public class User implements UserDetails {
             name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private List<Role> roles;
+    private Set<Role> roles;
 
     public User() {
     }
 
-    public User(String name, String lastname, int age, String email, String password, List<Role> roles) {
+    public User(String name, String lastname, int age, String email, String password, Set<Role> roles) {
         this.name = name;
         this.lastname = lastname;
         this.age = age;
@@ -59,7 +56,15 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        return getRoles();
+    }
+
+    public Set<Role> getRoles() {
         return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     @Override

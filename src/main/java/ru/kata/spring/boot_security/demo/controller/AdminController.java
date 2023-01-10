@@ -5,24 +5,25 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.kata.spring.boot_security.demo.DAO.RoleDAO;
-import ru.kata.spring.boot_security.demo.DAO.UserDAO;
+
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.service.RoleService;
+import ru.kata.spring.boot_security.demo.service.UserService;
 
-import java.util.List;
+import java.util.Set;
 
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
 
-    private final UserDAO userService;
-    private final RoleDAO roleService;
+    private final UserService userService;
+    private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public AdminController(UserDAO userService, RoleDAO roleService, PasswordEncoder passwordEncoder) {
+    public AdminController(UserService userService, RoleService roleService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.roleService = roleService;
         this.passwordEncoder = passwordEncoder;
@@ -38,7 +39,7 @@ public class AdminController {
     public String addNewUser(Model model) {
       User user = new User();
       model.addAttribute("user", user);
-      List<Role> roles = roleService.findAll();
+      Set<Role> roles = roleService.findAll();
       model.addAttribute("roleList", roles);
       return "new";
     }
@@ -60,8 +61,7 @@ public class AdminController {
 
     @GetMapping("/editUser/{id}")
     public String editUser(Model model, @PathVariable("id") Long id) {
-
-        model.addAttribute("user", userService.findById(id).get());
+        model.addAttribute("user", userService.findById(id));
         model.addAttribute("roleList",roleService.findAll());
         return "edit";
     }
