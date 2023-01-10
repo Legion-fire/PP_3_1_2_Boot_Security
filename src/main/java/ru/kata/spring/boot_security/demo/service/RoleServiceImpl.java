@@ -17,6 +17,12 @@ public class RoleServiceImpl implements RoleService {
         this.roleRepository = roleRepository;
     }
 
+    @Override
+    @Transactional
+    public boolean add(Role role) {
+        roleRepository.add(role);
+        return true;
+    }
 
     @Override
     @Transactional

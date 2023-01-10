@@ -18,6 +18,12 @@ public class RoleRepositoryImpl implements RoleRepository {
     private EntityManager entityManager;
 
     @Override
+    public boolean add(Role role) {
+        entityManager.persist(role);
+        return true;
+    }
+
+    @Override
     public Set<Role> findAll() {
         return entityManager.createQuery("from Role", Role.class).getResultStream().collect(Collectors.toSet());
     }

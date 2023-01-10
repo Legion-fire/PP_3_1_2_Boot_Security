@@ -9,14 +9,15 @@ import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import javax.annotation.PostConstruct;
+import java.util.*;
 
 
 @Component
 public class Init {
 
     private final PasswordEncoder encoder;
-        private final UserService userService;
-        private final RoleService roleService;
+    private final UserService userService;
+    private final RoleService roleService;
 
     @Autowired
     public Init(PasswordEncoder encoder, UserService userService, RoleService roleService) {
@@ -28,15 +29,16 @@ public class Init {
 
     @PostConstruct
         public void createTable () {
-        if (roleService.findAll().isEmpty()) {
-        Role admin = new Role("ROLE_ADMIN", 56L);
-        Role user = new Role("ROLE_USER", 57L);
-        final User user1 = new User();
-        user1.setName("Мишка");
-        user1.setEmail("Zara@yandex.ru");
-        user1.setPassword(encoder.encode("123"));
-        user1.setRoles(user1.getRoles());
-        userService.save(user1);
+        if (userService.findAll().isEmpty()){
+        Role admin = new Role( "ROLE_ADMIN", 1L);
+        Role user = new Role("ROLE_USER", 2L);
+        roleService.add(admin);
+        roleService.add(user);
+        Set<Role> setRole = new HashSet<>();
+        setRole.add(admin);
+        User newAdmin = new User("Михаил", "Янаров", 28,
+                "Legion-fire@yandex.ru", "$2a$12$nNj251hCDwafhk/uGw2Wtehm7whW7QWOx6rdmxLKliLl5X8QbUSC.", setRole);
+        userService.save(newAdmin);
         }
     }
 }

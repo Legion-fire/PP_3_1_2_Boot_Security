@@ -40,14 +40,12 @@ public class AdminController {
       User user = new User();
       model.addAttribute("user", user);
       Set<Role> roles = roleService.findAll();
-      model.addAttribute("roleList", roles);
+      model.addAttribute("roleSetList", roles);
       return "new";
     }
 
     @PostMapping("/newAddUserAdmin")
-    public String saveNewUser(
-            @ModelAttribute("user") User user
-            ) {
+    public String saveNewUser(@ModelAttribute("user") User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.save(user);
         return "redirect:/admin";
