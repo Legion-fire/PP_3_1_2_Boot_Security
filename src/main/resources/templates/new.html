@@ -22,16 +22,18 @@
         <br>
         <label for="password">Password: </label>
         <input type="text" th:field="*{password}" id="password" placeholder="Password">
-
-        <p>
-            <label>Roles:
-                <select size="2" multiple name="listRoles" required="required">
-                    <option selected="selected"
-                            value="1">ROLE_USER</option>
-                    <option value="2">ROLE_ADMIN</option>
-                </select>
-            </label>
-        </p>
+        <br><br>
+        <tr>
+            <td>
+                <label>Roles:
+                    <select size="2" multiple name="roleSetList" required="required">
+                        <option selected="selected"
+                                value="1">USER</option>
+                        <option value="2">ADMIN</option>
+                    </select>
+                </label>
+            </td>
+        </tr>
         <br>
         <input type="submit" value="CREATE!"/>
     </form>

@@ -5,12 +5,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
+import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.Set;
 
 
@@ -36,17 +36,15 @@ public class AdminController {
     }
 
     @GetMapping("/newAddUserAdmin")
-    public String addNewUser(Model model) {
-        User user = new User();
-        model.addAttribute("user", user);
-        Set<Role> roles = roleService.findAll();
-        model.addAttribute("roleSetList", roles);
+    public String addNewUser(@ModelAttribute("user") User user, Model model) {
+        model.addAttribute("roleSetList",roleService.findAll());
         return "new";
     }
 
     @PostMapping("/newAddUserAdmin")
-    public String saveNewUser(@ModelAttribute("user") User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+    public String saveNewUser(@ModelAttribute("user") User user,
+                              @RequestParam("roleSetList") ArrayList<Long> roles) {
+        user.setRoles(roleService.findByIdRoles(roles));
         userService.save(user);
         return "redirect:/admin";
     }
@@ -60,12 +58,14 @@ public class AdminController {
     @GetMapping("/edit")
     public String editUser(Model model, @RequestParam("id") Long id) {
         model.addAttribute("user", userService.findById(id));
-        model.addAttribute("roleList",roleService.findAll());
+        model.addAttribute("roleSetList",roleService.findAll());
         return "edit";
     }
 
     @PostMapping("/{id}")
-    public String userSaveEdit(@ModelAttribute("user") User user) {
+    public String userSaveEdit(@Valid User user,
+                               @RequestParam("roleSetList") ArrayList<Long>roles) {
+        user.setRoles(roleService.findByIdRoles(roles));
         userService.save(user);
         return "redirect:/admin";
     }
