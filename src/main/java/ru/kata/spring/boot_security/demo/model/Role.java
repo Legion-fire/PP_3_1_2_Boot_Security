@@ -3,7 +3,6 @@ package ru.kata.spring.boot_security.demo.model;
 import lombok.Data;
 import javax.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
-import java.util.Set;
 
 @Entity
 @Data
@@ -12,9 +11,6 @@ public class Role implements GrantedAuthority {
     @Id
     private Long id;
     private String name;
-
-    @Transient
-    private Set<User> user;
 
     public Role() {
     }
